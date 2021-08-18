@@ -8,7 +8,7 @@ from collections import OrderedDict
 import tensorflow as tf
 
 def run(*args, **kwargs):  # Run the specified ops in the default session.
-    return tf.get_default_session().run(*args, **kwargs)
+    return tf.compat.v1.get_default_session().run(*args, **kwargs)
 
 
 def is_tf_expression(x):
@@ -52,8 +52,8 @@ def absolute_name_scope(scope):  # Forcefully enter the specified name scope, ig
 # Initialize TensorFlow graph and session using good default settings.
 
 def init_tf(config_dict=dict()):
-    if tf.get_default_session() is None:
-        tf.set_random_seed(np.random.randint(1 << 31))
+    if tf.compat.v1.get_default_session() is None:
+        tf.compat.v1.set_random_seed(np.random.randint(1 << 31))
         create_session(config_dict, force_as_default=True)
 
 
@@ -62,14 +62,14 @@ def init_tf(config_dict=dict()):
 # {'gpu_options.allow_growth': True}
 
 def create_session(config_dict=dict(), force_as_default=False):
-    config = tf.ConfigProto()
+    config = tf.compat.v1.ConfigProto()
     for key, value in config_dict.items():
         fields = key.split('.')
         obj = config
         for field in fields[:-1]:
             obj = getattr(obj, field)
         setattr(obj, fields[-1], value)
-    session = tf.Session(config=config)
+    session = tf.compat.v1.Session(config=config)
     if force_as_default:
         session._default_session = session.as_default()
         session._default_session.enforce_nesting = False
