@@ -10,6 +10,7 @@ import tfutil
 import dataset
 import misc
 
+#TEST
 
 # ----------------------------------------------------------------------------
 # Choose the size and contents of the image snapshot grids that are exported
